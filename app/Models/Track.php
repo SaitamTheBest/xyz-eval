@@ -32,6 +32,11 @@ class Track extends Model
                     ->withDefault();
     }
 
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(Category::class);
+    }
+
     /**
      * Get the track likes.
      */

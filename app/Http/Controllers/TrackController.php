@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Week;
 use App\Models\Track;
 use App\Players\Player;
@@ -35,9 +36,12 @@ class TrackController extends Controller
      */
     public function create(UserService $user): View
     {
+        $categories = Category::all();
+
         return view('app.tracks.create', [
             'week' => Week::current(),
             'remaining_tracks_count' => $user->remainingTracksCount(),
+            'categories' => $categories,
         ]);
     }
 
@@ -52,6 +56,7 @@ class TrackController extends Controller
             'title' => ['required', 'string', 'max:255'],
             'artist' => ['required', 'string', 'max:255'],
             'url' => ['required', 'url', new PlayerUrl()],
+            'category' => ['required', 'string', 'max:255'],
         ]);
 
         DB::beginTransaction();
@@ -59,8 +64,11 @@ class TrackController extends Controller
         // Set track title, artist and url
         $track = new Track($validated);
 
+        $category = Category::firstOrCreate(['name' => $validated['category']]);
+
         // Set track's user + week
         $track->user()->associate($request->user());
+        $track->category()->associate($category);
         $track->week()->associate(Week::current());
 
         try {

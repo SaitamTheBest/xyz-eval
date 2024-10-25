@@ -78,6 +78,14 @@ class User extends Authenticatable
     }
 
     /**
+     * Get the user categories.
+     */
+    public function categories(): HasMany
+    {
+        return $this->hasMany(Category::class);
+    }
+
+    /**
      * Get the user likes.
      */
     public function likes(): BelongsToMany

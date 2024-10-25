@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
+use Database\Factories\CategoryFactory;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\WeekController;
@@ -33,6 +35,10 @@ Route::middleware('auth')->group(function () {
     // Track
     Route::get('/tracks/create', [TrackController::class, 'create'])->name('app.tracks.create');
     Route::post('/tracks/create', [TrackController::class, 'store'])->name('app.tracks.store');
+
+    //Category
+    Route::get('/category',[CategoryController::class,'index'])->name('app.categories.index');
+    Route::get('/category/{category}',[CategoryController::class,'show'])->name('app.categories.show');
 
     // Profile
     Route::get('/profile', [ProfileController::class, 'edit'])->name('app.profile.edit');
