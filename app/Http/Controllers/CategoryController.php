@@ -17,6 +17,8 @@ class CategoryController extends Controller
     public function show(Category $category)
     {
         $tracks = $category->tracks()
+            ->withCount('likes')
+            ->orderBy('likes_count', 'desc')
             ->paginate(10);
         return view('app.categories.show', compact('category', 'tracks'));
     }
